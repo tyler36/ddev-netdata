@@ -68,6 +68,23 @@ teardown() {
   health_checks
 }
 
+@test "Netdata port is configurable" {
+  set -eu -o pipefail
+
+  export NETDATA_HTTPS_PORT=8080
+
+  echo "# ddev add-on get ${DIR} with project ${PROJNAME} in $(pwd)" >&3
+  run ddev add-on get "${DIR}"
+  assert_success
+
+  ddev dotenv set .ddev/.env --netdata-https-port="${NETDATA_HTTPS_PORT}"
+  run ddev restart -y
+  assert_success
+
+  run curl -sf "https://${PROJNAME}.ddev.site:${NETDATA_HTTPS_PORT}"
+  assert_output --partial "<title>Netdata</title>"
+}
+
 # bats test_tags=release
 @test "install from release" {
   set -eu -o pipefail
