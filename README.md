@@ -23,6 +23,7 @@ After installation, make sure to commit the `.ddev` directory to version control
 | Command | Description |
 | ------- | ----------- |
 | `ddev describe` | View service status and used ports for Netdata |
+| `ddev netdata` | Launch local Netdata UI |
 | `ddev logs -s netdata` | Check Netdata logs |
 
 ## Advanced Customization

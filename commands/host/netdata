@@ -1,0 +1,16 @@
+#!/usr/bin/env bash
+
+#ddev-generated
+## Description: Launch the netdata website
+## Usage: netdata
+## Example: "ddev netdata"
+
+source .ddev/.env
+PORT="${NETDATA_HTTPS_PORT:-19999}"
+
+# Open Netdata in preferred browser.
+launch () {
+  ddev launch :"${PORT}"
+}
+
+launch

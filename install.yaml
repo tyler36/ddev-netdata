@@ -2,5 +2,6 @@ name: netdata
 
 project_files:
   - docker-compose.netdata.yaml
+  - commands
 
 ddev_version_constraint: '>= v1.24.3'

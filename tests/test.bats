@@ -85,6 +85,17 @@ teardown() {
   assert_output --partial "<title>Netdata</title>"
 }
 
+@test "it opens Netdata via command" {
+  set -eu -o pipefail
+
+  echo "# ddev add-on get ${DIR} with project ${PROJNAME} in $(pwd)" >&3
+  run ddev add-on get "${DIR}"
+  assert_success
+
+  DDEV_DEBUG=true run ddev netdata
+  assert_output --partial "FULLURL https://test-ddev-netdata.ddev.site:19999"
+}
+
 # bats test_tags=release
 @test "install from release" {
   set -eu -o pipefail
