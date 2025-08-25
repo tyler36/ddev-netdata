@@ -7,7 +7,11 @@
 
 ## Overview
 
-This add-on integrates Netdata into your [DDEV](https://ddev.com/) project.
+This add-on integrates [Netdata](https://www.netdata.cloud/features/) into your [DDEV](https://ddev.com/) project.
+
+> Stream any metrics from every physical and virtual server, container and IoT device, to one dashboard, in real-time.
+>
+> [NetData features](https://www.netdata.cloud/features/)
 
 ## Installation
 
