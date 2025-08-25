@@ -31,7 +31,7 @@ After installation, make sure to commit the `.ddev` directory to version control
 To change the Docker image:
 
 ```bash
-ddev dotenv set .ddev/.env.netdata --netdata-docker-image="ddev/ddev-utilities:latest"
+ddev dotenv set .ddev/.env.netdata --netdata-docker-image="netdata/netdata:latest"
 ddev add-on get tyler36/ddev-netdata
 ddev restart
 ```
