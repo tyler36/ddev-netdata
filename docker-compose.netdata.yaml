@@ -1,7 +1,7 @@
 #ddev-generated
 services:
   netdata:
-    image: netdata/netdata:${NETDATA_DOCKER_TAG:-latest}
+    image: ${NETDATA_DOCKER_IMAGE:-netdata/netdata:latest}
     container_name: ddev-${DDEV_SITENAME}-netdata
     volumes:
       - .:/mnt/ddev_config
