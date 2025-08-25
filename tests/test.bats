@@ -39,17 +39,9 @@ setup() {
 }
 
 health_checks() {
-  # Do something useful here that verifies the add-on
-
-  # You can check for specific information in headers:
-  # run curl -sfI https://${PROJNAME}.ddev.site
-  # assert_output --partial "HTTP/2 200"
-  # assert_output --partial "test_header"
-
-  # Or check if some command gives expected output:
-  DDEV_DEBUG=true run ddev launch
-  assert_success
-  assert_output --partial "FULLURL https://${PROJNAME}.ddev.site"
+  # Check via ddev exec curl netdata:19999
+  run ddev exec curl -sf netdata:19999
+  assert_output --partial "Netdata"
 }
 
 teardown() {
@@ -69,9 +61,39 @@ teardown() {
   echo "# ddev add-on get ${DIR} with project ${PROJNAME} in $(pwd)" >&3
   run ddev add-on get "${DIR}"
   assert_success
+
   run ddev restart -y
   assert_success
+
   health_checks
+}
+
+@test "Netdata port is configurable" {
+  set -eu -o pipefail
+
+  export NETDATA_HTTPS_PORT=8080
+
+  echo "# ddev add-on get ${DIR} with project ${PROJNAME} in $(pwd)" >&3
+  run ddev add-on get "${DIR}"
+  assert_success
+
+  ddev dotenv set .ddev/.env --netdata-https-port="${NETDATA_HTTPS_PORT}"
+  run ddev restart -y
+  assert_success
+
+  run curl -sf "https://${PROJNAME}.ddev.site:${NETDATA_HTTPS_PORT}"
+  assert_output --partial "<title>Netdata</title>"
+}
+
+@test "it opens Netdata via command" {
+  set -eu -o pipefail
+
+  echo "# ddev add-on get ${DIR} with project ${PROJNAME} in $(pwd)" >&3
+  run ddev add-on get "${DIR}"
+  assert_success
+
+  DDEV_DEBUG=true run ddev netdata
+  assert_output --partial "FULLURL https://test-ddev-netdata.ddev.site:19999"
 }
 
 # bats test_tags=release

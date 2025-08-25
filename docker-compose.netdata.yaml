@@ -1,15 +1,41 @@
 #ddev-generated
 services:
   netdata:
+    image: ${NETDATA_DOCKER_IMAGE:-netdata/netdata:latest}
     container_name: ddev-${DDEV_SITENAME}-netdata
-    image: ${NETDATA_DOCKER_IMAGE:-ddev/ddev-utilities:latest}
-    command: tail -f /dev/null
+    volumes:
+      - .:/mnt/ddev_config
+      - ddev-global-cache:/mnt/ddev-global-cache
+      - netdataconfig:/etc/netdata
+      - netdatalib:/var/lib/netdata
+      - netdatacache:/var/cache/netdata
+      # Map these host folders to collect data.
+      - /etc/passwd:/host/etc/passwd:ro
+      - /etc/group:/host/etc/group:ro
+      - /etc/localtime:/etc/localtime:ro
+      - /proc:/host/proc:ro
+      - /sys:/host/sys:ro
+      - /etc/os-release:/host/etc/os-release:ro
+      - /var/log:/host/var/log:ro
+    environment:
+      - VIRTUAL_HOST=$DDEV_HOSTNAME
+      - HTTP_EXPOSE=${NETDATA_HTTP_PORT:-19998}:19999
+      - HTTPS_EXPOSE=${NETDATA_HTTPS_PORT:-19998}:19999
     restart: "no"
     # These labels ensure this service is discoverable by DDEV.
     labels:
       com.ddev.site-name: ${DDEV_SITENAME}
       com.ddev.approot: ${DDEV_APPROOT}
+    cap_add:
+      - SYS_PTRACE
+      - SYS_ADMIN
+    expose:
+      - '19999:19999'
+    pid: host
+    security_opt:
+      - apparmor:unconfined
 
-    volumes:
-      - ".:/mnt/ddev_config"
-      - "ddev-global-cache:/mnt/ddev-global-cache"
+volumes:
+  netdataconfig:
+  netdatalib:
+  netdatacache:
