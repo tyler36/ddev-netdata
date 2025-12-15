@@ -20,7 +20,7 @@ services:
     environment:
       - VIRTUAL_HOST=$DDEV_HOSTNAME
       - HTTP_EXPOSE=${NETDATA_HTTP_PORT:-19998}:19999
-      - HTTPS_EXPOSE=${NETDATA_HTTPS_PORT:-19998}:19999
+      - HTTPS_EXPOSE=${NETDATA_HTTPS_PORT:-19999}:19999
     restart: "no"
     # These labels ensure this service is discoverable by DDEV.
     labels:
