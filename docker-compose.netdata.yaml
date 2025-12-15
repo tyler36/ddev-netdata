@@ -29,8 +29,6 @@ services:
     cap_add:
       - SYS_PTRACE
       - SYS_ADMIN
-    expose:
-      - '19999:19999'
     pid: host
     security_opt:
       - apparmor:unconfined
